@@ -10,8 +10,10 @@ import (
 )
 
 func read(conn *net.Conn) {
-	//TODO In a continuous loop, read a message from the server and display it.
 	reader := bufio.NewReader(*conn)
+
+	fmt.Println("Read worker started")
+
 	for {
 		msg, err := reader.ReadString('\n')
 		if err != nil {
@@ -24,8 +26,10 @@ func read(conn *net.Conn) {
 }
 
 func write(conn *net.Conn) {
-	//TODO Continually get input from the user and send messages to the server.
 	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Println("Writer worker started")
+
 	for {
 		text, err := reader.ReadString('\n')
 		if err != nil {
@@ -52,6 +56,8 @@ func main() {
 		return
 	}
 
+	fmt.Println("Connected to server")
+
 	var wg sync.WaitGroup
 
 	wg.Add(1)
@@ -65,6 +71,8 @@ func main() {
 		read(&conn)
 		wg.Done()
 	}()
+
+	fmt.Println("Start workers")
 
 	wg.Wait()
 
